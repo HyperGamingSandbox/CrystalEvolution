@@ -1,8 +1,31 @@
 
 local Control = require("Control")
 local Controls = require("Controls")
+local RendererHost = require("DD\\Renderer\\Host")
 
 local DebugOverlay = Control:extend()
+
+local RightWindow = Control.makeWrap(RBox)
+
+local calcPos = function (o, w, h)
+	local ow = o:get(#ROF_W)
+	dprint("x " .. (w - ow - 10) .. " " .. w .. " " .. ow)
+	o:set(#ROF_X, w - ow - 10)	
+	-- o:set(#ROF_W, w, math.floor(h / 2))	
+	o:cevent(#ROF_ONPARENTCHANGEPOS, o)
+end
+
+RightWindow:addEvents({
+	onAdd = function(self)
+		-- dprint("onAdd")
+		calcPos(self, RendererHost.getViewSize())
+	end,
+	onViewSize = function(self, w, h)
+		-- dprint("onViewSize")
+		calcPos(self, w, h)
+	end
+})
+
 
 function _f(a)
 	if a == nil then return "" end
@@ -29,7 +52,8 @@ function DebugOverlay:initialize(opt, args)
 	local sz = 20
 	self.sz = sz
 
-	self.windowControl = self:add(RBox:new(10, 10, 220, 11 + sz * (table.getn(args)), 0x3c3c3c, 1, 0xe0e0e0))
+	-- self.windowControl = self:add(RBox:new(10, 10, 220, 11 + sz * (table.getn(args)), 0x3c3c3c, 1, 0xe0e0e0))
+	self.windowControl = self:add(RightWindow:new(0, 10, 220, 11 + sz * (table.getn(args)), 0x3c3c3c, 1, 0xe0e0e0))
 
 	self.y = 0
 	for i, p in ipairs(args) do

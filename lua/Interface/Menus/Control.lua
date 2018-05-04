@@ -15,7 +15,8 @@ function ControlMenu.checkDefaultOptions(optionFile)
 		down 	= #Key_S,
 		left 	= #Key_A,
 		right 	= #Key_D,
-		map 	= #Key_M
+		map 	= #Key_M,
+		debugConsole = #Key_OEM_3
 	}
 
 	for name, code in pairs(default) do

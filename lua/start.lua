@@ -33,6 +33,7 @@ function Main:initialize(instance, cmdShow)
 		[#WM_SYSKEYUP]		= "onSysKeyUp",
 		[#WM_KEYDOWN]		= "onKeyDown",
 		[#WM_KEYUP]			= "onKeyUp",
+		[#WM_CHAR]			= "onChar",		
 		[#WM_ACTIVATE]		= "onWindowActive",
 		[#WM_MOVE]			= "onWindowMove",
 
@@ -96,7 +97,7 @@ function Main:start()
 	wnd:update()
 
 	local r = MessageLoop(3, function()
-		collectgarbage()
+		-- collectgarbage()
 		self:readQueue()
 	end)
 
@@ -227,7 +228,7 @@ function Main:readQueue()
 	end
 end
 
-function start(instance, cmdShow)
+function start(instance, cmdShow)	
 
 	local m = Main:new(instance, cmdShow)
 	local r = m:start()

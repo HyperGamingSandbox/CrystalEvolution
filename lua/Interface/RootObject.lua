@@ -137,7 +137,11 @@ function RootObject:initialize()
 	self.interfaceLayer = self.rootObject:add(RenderObject:new())
 	self.interfaceLayer:set(childProxyEvent(#ROF_ONVIEWSIZE))
 
+	self.debugConsoleLayer = self.rootObject:add(RenderObject:new())
+	self.debugConsoleLayer:set(childProxyEvent(#ROF_ONVIEWSIZE))
+
 	self.overlayLayer = self.rootObject:add(RenderObject:new())
+	self.overlayLayer:set(childProxyEvent(#ROF_ONVIEWSIZE))
 
 end
 

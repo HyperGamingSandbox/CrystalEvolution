@@ -26,6 +26,8 @@ local DebugOverlay = require("Interface\\DebugOverlay")
 local Loader = require("ImageLoader\\Host")
 local Game = require("Game\\Game")
 
+local DebugConsole = require("Controls\\DebugConsole")
+
 function Interface:init(wnd)
 	self.wnd = wnd
 
@@ -36,6 +38,8 @@ function Interface:init(wnd)
 end
 
 function Interface:start()
+
+	-- dprint("Interface:start")
 
 	self:setMessageNames({
 		[#M_Quit]		= "onQuit",
@@ -55,6 +59,8 @@ function Interface:start()
 
 	self.rootObject = RootObject:new()
 
+	-- dprint("Interface:start 1")
+
 	self.renderer = RendererHost:new(
 		self.dd, self.wnd, self.pump, self.childQueue, self.rootObject.rootObject,
 		self.ownerQueue, "Interface\\RenderInfoCollector", self.optionFile
@@ -63,6 +69,8 @@ function Interface:start()
 	local g = self.optionFile:getGroup("video")
 
 	RendererHost.switchMode(g:get("fullscreen"), g:get("screenWidth"), g:get("screenHeight"))
+
+	-- dprint("Interface:start 2")
 
 	self.background = self.rootObject.mapLayer:add(RBackground:new())
 
@@ -197,6 +205,7 @@ end
 function Interface:keyPressed(key, alt)
 
 	if alt and key == #Key_Return then
+
 		LightThread:new(function()
 			local fullscreen, w, h = LightThread.yield(self.renderer:switchFullscreen())
 			local g = self.optionFile:getGroup("video")
@@ -204,6 +213,7 @@ function Interface:keyPressed(key, alt)
 			g:set("screenWidth", w)
 			g:set("screenHeight", h)
 		end)
+
 	elseif key == #Key_Esc then
 
 		if self.game ~= nil then
@@ -227,6 +237,29 @@ function Interface:keyPressed(key, alt)
 				self.rootObject:adterDel()
 			end
 
+		end
+	else
+
+		local g = self.optionFile:getGroup("keys")
+
+		if key == g:get("debugConsole") then
+
+			if self.debugConsole ~= nil then
+				-- close console
+
+				self.rootObject.debugConsoleLayer:del(self.debugConsole)
+				self.debugConsole = nil
+				self.rootObject:adterDel()
+			else
+				-- open console
+
+				dprint("debugConsole open")
+				self.debugConsole = self.rootObject.debugConsoleLayer:add(DebugConsole:new())
+				self.rootObject:adterDel()
+
+			end
+		else
+			RendererHost.processKey(key, alt)
 		end
 
 	end

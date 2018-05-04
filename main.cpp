@@ -61,7 +61,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	_lprint("");
 
 #ifdef _DEBUG	
-	Seed::addLuaSearchDirectory("D:\\development\\projects\\Seed\\lua");
+	Seed::addLuaSearchDirectory("D:\\development\\github\\Seed\\lua");
 	Seed::addLuaSearchDirectory("lua");
 #else
 	filePack = new Seed::FilePack("data.pack");
